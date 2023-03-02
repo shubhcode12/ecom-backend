@@ -3,9 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const { MongoClient } = require("mongodb");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+require('dotenv').config();
 const cors = require("cors");
-dotenv.config({ path: "config/config.env" })
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
