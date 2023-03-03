@@ -33,10 +33,17 @@ const database = client.db('ecom_products');
 const restaurants = database.collection('products');
 const categories = database.collection('categories');
 const admins = database.collection('admin');
+const cart = database.collection('cart');
 let users = database.collection('users');
 
 app.post("/test", cors(), async (req, res) => {
     res.send(`hello : ${req.body.name}`);
+});
+
+app.post("/cart", cors(), (req, res) => {
+    const productIdParam = req.query.productId;
+    res.send(`added to cart : ${productIdParam}`);
+
 });
 
 app.post("/adminLogin", cors(), async (req, res) => {
