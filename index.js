@@ -3,12 +3,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const { MongoClient } = require("mongodb");
 const mongoose = require("mongoose");
+const authRouter = require("./routes/auth");
 require('dotenv').config();
 const cors = require("cors");
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use("/api", authRouter)
 
 let client;
 let responce;
@@ -49,7 +50,7 @@ app.post("/cart", cors(), (req, res) => {
 app.post("/adminLogin", cors(), async (req, res) => {
     adminResponce = await admins.find({}).toArray();
 
-    if (req.query.email == adminResponce[0]['email'] && req.query.password == adminResponce[0]['password']) {
+    if (req.body.email == adminResponce[0]['email'] && req.body.password == adminResponce[0]['password']) {
         res.json({
             status: "ok",
             message: "Login succsessfully done"
@@ -65,7 +66,7 @@ app.post("/adminLogin", cors(), async (req, res) => {
 
 app.post("/userLogin", cors(), (req, res) => {
 
-    if (req.query.email == usersResponce[0]['email'] && req.query.password == usersResponce[0]['password']) {
+    if (req.body.email == usersResponce[0]['email'] && req.body.password == usersResponce[0]['password']) {
         res.json({
             status: "ok",
             message: "User Logged in succsessfully "
@@ -83,12 +84,12 @@ app.post("/userSignup", async (req, res) => {
 
     try {
         const newUserData = {
-            "name": req.query.name,
-            "address": req.query.address,
-            "company": req.query.company,
-            "email": req.query.email,
-            "phone": req.query.phone,
-            "password": req.query.password
+            "name": req.body.name,
+            "address": req.body.address,
+            "company": req.body.company,
+            "email": req.body.email,
+            "phone": req.body.phone,
+            "password": req.body.password
         };
         const result = await users.insertOne(newUserData);
         console.log(`A user was inserted with the _id: ${result.insertedId}`,);
