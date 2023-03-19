@@ -34,6 +34,29 @@ router.route("/products/add").post(async function (req , res){
     });
 });
 
+
+router.route("/products/cart").post(async function (req , res){
+
+    try{
+        if (!req.body.userId) {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                message: "Please provide UserId",
+            });
+        }
+
+        const result  = await Cart.find({'userId': req.body.userId});
+        if(!result){
+            res.res.status(404).send({ message: "Cart Items Not found." });
+        }
+
+        res.status(200).json(result);
+    }catch(err){
+        res.status(500).json({
+            error : err
+        })
+    }
+});
+
 router.route("/products/addCart").post(async function (req , res){
 
     if (!req.body.productId || !req.body.userId ) {
