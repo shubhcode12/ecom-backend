@@ -51,6 +51,7 @@ router.route("/products/addCart").post(async function (req , res){
         }
 
         const cartProduct = new Cart({
+            _id : new mongoose.Types.ObjectId,
             productId : product._id,
             userId : req.body.userId,
             quantity : req.body.quantity
