@@ -4,14 +4,16 @@ const Product = require("../models/product.model");
 const Category = require("../models/category.model");
 const Cart = require("../models/cart.model");
 const { default: mongoose } = require("mongoose");
+const Razorpay = require('razorpay');
+var instance = new Razorpay({ key_id: 'rzp_test_c3XxeYO6fC8y0Q', key_secret: 'I1OLvfdY4ORU16' })
 
 
-router.route("/products").get(async function (req , res){
+router.route("/product").get(async function (req , res){
     const result = await Product.find();
     res.json(result)
 });
 
-router.route("/products/category").post(async function (req , res){
+router.route("/product/category").post(async function (req , res){
     if (!req.body.category) {
         res.status(StatusCodes.BAD_REQUEST).json({
             message: "Please provide Category",
@@ -25,7 +27,7 @@ router.route("/products/category").post(async function (req , res){
     res.json(result)
 });
 
-router.route("/products/add").post(async function (req , res){
+router.route("/product/add").post(async function (req , res){
     const product = new Product ({
         _id : new mongoose.Types.ObjectId, 
         name : req.body.name,
@@ -49,7 +51,7 @@ router.route("/products/add").post(async function (req , res){
 });
 
 
-router.route("/products/cart").post(async function (req , res){
+router.route("/product/cart").post(async function (req , res){
 
     try{
         if (!req.body.userId) {
@@ -71,7 +73,7 @@ router.route("/products/cart").post(async function (req , res){
     }
 });
 
-router.route("/products/addCart").post(async function (req , res){
+router.route("/product/addCart").post(async function (req , res){
 
     if (!req.body.productId || !req.body.userId ) {
         res.status(StatusCodes.BAD_REQUEST).json({
