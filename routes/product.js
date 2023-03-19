@@ -11,6 +11,20 @@ router.route("/products").get(async function (req , res){
     res.json(result)
 });
 
+router.route("/products/category").post(async function (req , res){
+    if (!req.body.category) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Please provide Category",
+        });
+    }
+    const result = await Product.find({'category': req.body.category});
+
+    if(!result){
+        res.res.status(404).send({ message: `Products from ${req.body.category} Not found.` });
+    }
+    res.json(result)
+});
+
 router.route("/products/add").post(async function (req , res){
     const product = new Product ({
         _id : new mongoose.Types.ObjectId, 
