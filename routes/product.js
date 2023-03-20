@@ -8,7 +8,7 @@ const Razorpay = require('razorpay');
 var instance = new Razorpay({ key_id: 'rzp_test_kKW77dAK7rl81W', key_secret: 'RWZVfsGxojTTEkJhnRc8jbwi' })
 
 
-
+// product list api
 router.route("/product").get(async function (req, res) {
     try {
         const result = await Product.find();
@@ -23,7 +23,8 @@ router.route("/product").get(async function (req, res) {
 
 });
 
-router.route("/product/search", "/:query").get(async function (req, res) {
+// product search by name api
+router.route("/product/", "/:query").get(async function (req, res) {
     try {
         let query = req.query.query;
         const result = await Product.find({ name: query });
@@ -38,7 +39,7 @@ router.route("/product/search", "/:query").get(async function (req, res) {
 
 });
 
-
+// product buy api
 router.route("/product/buy").post(async function (req, res) {
     const product = await Product.findById(req.body.productId);
     if (!product) {
@@ -63,6 +64,7 @@ router.route("/product/buy").post(async function (req, res) {
 
 });
 
+// payment verify api
 router.post("/payment/verify", (req, res) => {
 
     let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
@@ -79,6 +81,7 @@ router.post("/payment/verify", (req, res) => {
     res.send(response);
 });
 
+// product category list api
 router.route("/product/category").post(async function (req, res) {
     if (!req.body.category) {
         res.status(StatusCodes.BAD_REQUEST).json({
@@ -93,6 +96,7 @@ router.route("/product/category").post(async function (req, res) {
     res.json(result)
 });
 
+// new product add api 
 router.route("/product/add").post(async function (req, res) {
     const product = new Product({
         _id: new mongoose.Types.ObjectId,
@@ -116,7 +120,7 @@ router.route("/product/add").post(async function (req, res) {
     });
 });
 
-
+// product cart list by userId api
 router.route("/product/cart").post(async function (req, res) {
 
     try {
@@ -139,6 +143,7 @@ router.route("/product/cart").post(async function (req, res) {
     }
 });
 
+// product add to cart by productId & userId api
 router.route("/product/addCart").post(async function (req, res) {
 
     if (!req.body.productId || !req.body.userId) {
@@ -177,11 +182,14 @@ router.route("/product/addCart").post(async function (req, res) {
 
 });
 
+// category list api
 router.route("/category").get(async function (req, res) {
     const result = await Category.find();
     res.json(result)
 });
 
+
+// add new category by name and image api 
 router.route("/category/add").post(async function (req, res) {
     const category = new Category({
         _id: new mongoose.Types.ObjectId,
