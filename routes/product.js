@@ -5,13 +5,55 @@ const Category = require("../models/category.model");
 const Cart = require("../models/cart.model");
 const { default: mongoose } = require("mongoose");
 const Razorpay = require('razorpay');
-var instance = new Razorpay({ key_id: 'rzp_test_c3XxeYO6fC8y0Q', key_secret: 'I1OLvfdY4ORU16' })
+var instance = new Razorpay({ key_id: 'rzp_test_kKW77dAK7rl81W', key_secret: 'RWZVfsGxojTTEkJhnRc8jbwi' })
+
 
 
 router.route("/product").get(async function (req , res){
     const result = await Product.find();
     res.json(result)
 });
+
+
+router.route("/product/buy").post(async function (req , res){
+    const product = await Product.findById(req.body.productId);
+    if(!product){
+        res.status(404).send({ message: 'Products Not found.' });
+    }
+    let price = product.price;
+    let r = (Math.random() + 1).toString(36).substring(7);
+    const receiptName = "order_rcptid_" + r;
+    var options = {
+        amount: product.price,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: receiptName
+      };
+
+    instance.orders.create(options, function(err, order) {
+        res.json({
+            success : true,
+            order : order,
+            amount : price
+        });
+    });  
+   
+});
+
+router.post("/payment/verify",(req,res)=>{
+
+    let body=req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
+   
+     var crypto = require("crypto");
+     var expectedSignature = crypto.createHmac('sha256', 'RWZVfsGxojTTEkJhnRc8jbwi')
+                                     .update(body.toString())
+                                     .digest('hex');
+                                     console.log("sig received " ,req.body.response.razorpay_signature);
+                                     console.log("sig generated " ,expectedSignature);
+     var response = {"signatureIsValid":"false"}
+     if(expectedSignature === req.body.response.razorpay_signature)
+      response={"signatureIsValid":"true"}
+         res.send(response);
+     });
 
 router.route("/product/category").post(async function (req , res){
     if (!req.body.category) {
