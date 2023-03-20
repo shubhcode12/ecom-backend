@@ -184,11 +184,15 @@ router.route("/product/addCart").post(async function (req, res) {
 
 // category list api
 router.route("/category").get(async function (req, res) {
-    const result = await Category.find();
-    if (!result) {
-        return res.status(404).send({ message: "Categories Not found." });
+    try {
+        const result = await Category.find();
+        if (!result) {
+            return res.status(404).send({ message: "Categories Not found." });
+        }
+        res.json(result)
+    } catch (err) {
+        res.json({ error: err });
     }
-    res.json(result)
 });
 
 
