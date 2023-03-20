@@ -18,7 +18,22 @@ router.route("/product").get(async function (req, res) {
         res.json(result);
 
     } catch (err) {
-        res.json({error : err});
+        res.json({ error: err });
+    }
+
+});
+
+router.route("/product/search", "/:query").get(async function (req, res) {
+    try {
+        let query = req.query.query;
+        const result = await Product.find({ name: query });
+        if (!result) {
+            res.res.status(404).send({ message: `Products Not found.` });
+        }
+        res.json(result);
+
+    } catch (err) {
+        res.json({ error: err });
     }
 
 });
