@@ -182,6 +182,34 @@ router.route("/product/addCart").post(async function (req, res) {
 
 });
 
+router.route("/product/", "/:id").delete(async function (req, res) {
+    let id = req.query.id;
+    if (!id) {
+        return res.status(404).send({ message: "Please provide Category Id." });
+    }
+
+    try {
+
+        await Product.deleteOne({
+            _id: id
+        }).then((result) => {
+            res.json({
+                productDeleted: result
+            })
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        });
+
+    } catch (err) {
+        res.json({
+            error: err
+        })
+    }
+
+});
+
 // category list api
 router.route("/category").get(async function (req, res) {
     try {
