@@ -182,6 +182,7 @@ router.route("/product/addCart").post(async function (req, res) {
 
 });
 
+// Delete Product by id Api 
 router.route("/product/", "/:id").delete(async function (req, res) {
     let id = req.query.id;
     if (!id) {
@@ -243,6 +244,7 @@ router.route("/category/add").post(async function (req, res) {
     });
 });
 
+// Delete category by id Api
 router.route("/category/", "/:id").delete(async function (req, res) {
     let id = req.query.id;
     if (!id) {
