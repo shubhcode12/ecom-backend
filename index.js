@@ -8,9 +8,14 @@ const userRouter = require("./routes/user");
 require('dotenv').config();
 const cors = require("cors");
 
+var corsOptions = {
+    origin: 'https://ecom-backend-opal.vercel.app/',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use("/api", authRouter);
 app.use("/api", productRouter);
 app.use("/api", userRouter);
