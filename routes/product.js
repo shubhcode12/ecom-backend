@@ -215,4 +215,31 @@ router.route("/category/add").post(async function (req, res) {
     });
 });
 
+router.route("/category/", "/:id").delete(async function (req, res) {
+    let id = req.query.id;
+    if (!id) {
+        return res.status(404).send({ message: "Please provide Category Id." });
+    }
+
+    try {
+
+        await Category.deleteOne({
+            _id: id
+        }).then((result) => {
+            res.json({
+                catDeleted: result
+            })
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        });
+
+    } catch (err) {
+        res.json({
+            error: err
+        })
+    }
+
+});
 module.exports = router;
