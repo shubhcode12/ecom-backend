@@ -4,6 +4,7 @@ const Product = require("../models/product.model");
 const Category = require("../models/category.model");
 const Cart = require("../models/cart.model");
 const { default: mongoose } = require("mongoose");
+const User = require("../models/user.model");
 const Razorpay = require('razorpay');
 var instance = new Razorpay({ key_id: 'rzp_test_kKW77dAK7rl81W', key_secret: 'RWZVfsGxojTTEkJhnRc8jbwi' })
 
@@ -272,4 +273,37 @@ router.route("/category/", "/:id").delete(async function (req, res) {
     }
 
 });
+
+// summery api
+router.route("/summery").get(async function (req, res) {
+    
+    const productList = await Product.find();
+    const categoryList = await Category.find();
+    const userList = await User.find();
+
+    const orders = productList.length;
+    const customers = userList.length;
+    const product = productList.length;
+    const categories = categoryList.length;
+
+
+    if (!productList || !categoryList || !userList) {
+        res.json({
+            "orders": 0,
+            "customers": 0,
+            "product": 0,
+            "categories": 0,
+        });
+    } else {
+        res.json({
+            "orders": orders,
+            "customers": customers,
+            "product": product,
+            "categories": categories,
+        });
+    }
+
+
+})
+
 module.exports = router;
