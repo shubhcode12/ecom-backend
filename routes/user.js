@@ -36,5 +36,33 @@ router.route("/reviews/add").post(async function (req, res) {
     });
 });
 
+// delete review by id api
+router.route("/reviews/", "/:id").delete(async function (req, res) {
+    let id = req.query.id;
+    if (!id) {
+        return res.status(404).send({ message: "Please provide Review Id." });
+    }
+
+    try {
+
+        await Review.deleteOne({
+            _id: id
+        }).then((result) => {
+            res.json({
+                reviewDeleted: result
+            });
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+
+    } catch (err) {
+        res.json({
+            error: err
+        })
+    }
+
+});
 
 module.exports = router;
