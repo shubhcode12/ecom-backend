@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const Summery = require("../models/summery.model");
 const Product = require("../models/product.model");
 const Category = require("../models/category.model");
+const Reviews = require("../models/review.model");
 const Cart = require("../models/cart.model");
 const { default: mongoose } = require("mongoose");
 const User = require("../models/user.model");
@@ -276,33 +278,24 @@ router.route("/category/", "/:id").delete(async function (req, res) {
 
 // summery api
 router.route("/summery").get(async function (req, res) {
-    
+
     const productList = await Product.find();
     const categoryList = await Category.find();
     const userList = await User.find();
+    const ReviewList = await Reviews.find();
 
-    const orders = productList.length;
-    const customers = userList.length;
-    const product = productList.length;
-    const categories = categoryList.length;
+    await Summery.findOneAndUpdate({ title: 'Orders' }, { value: productList.length });
+    await Summery.findOneAndUpdate({ title: 'Products' }, { value: productList.length });
+    await Summery.findOneAndUpdate({ title: 'Categories' }, { value: categoryList.length });
+    await Summery.findOneAndUpdate({ title: 'Customers' }, { value: userList.length });
+    await Summery.findOneAndUpdate({ title: 'Reviews' }, { value: ReviewList.length });
 
 
-    if (!productList || !categoryList || !userList) {
-        res.json({
-            "orders": 0,
-            "customers": 0,
-            "product": 0,
-            "categories": 0,
-        });
-    } else {
-        res.json({
-            "orders": orders,
-            "customers": customers,
-            "product": product,
-            "categories": categories,
-        });
+    const result = await Summery.find();
+    if (!result) {
+        return res.status(404).send({ message: "Summery Not found." });
     }
-
+    res.json(result);
 
 })
 
