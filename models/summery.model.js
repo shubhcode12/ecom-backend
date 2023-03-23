@@ -1,25 +1,21 @@
 const mongoose = require("mongoose");
-const categorySchema = new mongoose.Schema({
-    "orders": {
-        "type": Number,
+const summerySchema = new mongoose.Schema({
+    "title": {
+        "type": "String",
         required: true
 
     },
-    "customers": {
-        "type": Number,
+    "subtitle": {
+        "type": "String",
         required: true,
     },
-    "product": {
-        "type": Number,
+    "value": {
+        "type": "String",
         required: true,
-    },
-    "categories": {
-        "type": Number,
-        required: true,
-    },
+    },   
 
 });
 
-const CategoryModel = mongoose.model("category", categorySchema, "categories");
+const SummeryModel = mongoose.model("summery", summerySchema, "summery");
 
-module.exports = CategoryModel;
+module.exports = SummeryModel;
