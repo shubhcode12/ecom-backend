@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const userRouter = require("./routes/user");
+const paymentRouter = require("./routes/payment");
 require('dotenv').config();
 const cors = require("cors");
 
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 app.use("/api", authRouter);
 app.use("/api", productRouter);
 app.use("/api", userRouter);
+app.use("/api", paymentRouter);
 
 
 app.get('/', (req, res) => {
