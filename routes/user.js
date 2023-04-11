@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
 const Review = require("../models/review.model");
+const Company = require("../models/company.model");
 const { default: mongoose } = require("mongoose");
 
 // Users listing api
@@ -15,6 +16,13 @@ router.route("/reviews").get(async function(req , res){
     const result = await Review.find();
     res.json(result); 
 });
+
+// Company List api
+router.route("/company").get(async function(req , res){
+    const result = await Company.find();
+    res.json(result); 
+});
+
 
 // Add Review by name, role & review Api 
 router.route("/reviews/add").post(async function (req, res) {
