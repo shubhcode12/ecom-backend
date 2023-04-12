@@ -190,7 +190,7 @@ router.route("/product/addCart").post(async function (req, res) {
 router.route("/product/", "/:id").delete(async function (req, res) {
     let id = req.query.id;
     if (!id) {
-        return res.status(404).send({ message: "Please provide Category Id." });
+        return res.status(404).send({ message: "Please provide Product Id In Query Params" });
     }
 
     try {
