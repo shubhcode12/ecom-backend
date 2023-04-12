@@ -22,6 +22,11 @@ const productSchema = new mongoose.Schema({
       "category": {
         "type": "String",
         required: true
+      },
+      "size": {
+        "type": "Number",
+        required: true,
+        default : 1
       }
 });
 
