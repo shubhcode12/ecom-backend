@@ -188,15 +188,15 @@ router.route("/product/addCart").post(async function (req, res) {
 
 // Delete Product by id Api 
 router.route("/product/", "/:id").delete(async function (req, res) {
-    let id = req.body.id;
+    let id = req.query.id;
     if (!id) {
-        return res.status(404).send({ message: "Please provide Product Id In Body Params" });
+        return res.status(404).send({ message: "Please provide Product Id In query Params" });
     }
 
     try {
 
         await Product.deleteOne({
-            _id: req.body.id
+            _id: id
         }).then((result) => {
             res.json({
                 productDeleted: result
