@@ -6,21 +6,40 @@ const Company = require("../models/company.model");
 const { default: mongoose } = require("mongoose");
 
 // Users listing api
-router.route("/users").get(async function (req , res){
+router.route("/users").get(async function (req, res) {
     const result = await User.find();
     res.json(result)
 });
 
 // Riviews list api
-router.route("/reviews").get(async function(req , res){
+router.route("/reviews").get(async function (req, res) {
     const result = await Review.find();
-    res.json(result); 
+    res.json(result);
 });
 
 // Company List api
-router.route("/company").get(async function(req , res){
+router.route("/company").get(async function (req, res) {
     const result = await Company.find();
-    res.json(result); 
+    res.json(result);
+});
+
+router.route("/company/add").post(async function (req, res) {
+    const company = new Company({
+        _id: new mongoose.Types.ObjectId,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+    });
+    company.save().then((cData) => {
+        res
+            .status(200)
+            .json({ newReview: cData });
+
+    }).catch(err => {
+        res.status(500).json({
+            error: err
+        })
+    });
 });
 
 
