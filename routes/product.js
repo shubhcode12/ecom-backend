@@ -108,6 +108,7 @@ router.route("/product/add").post(async function (req, res) {
         images: req.body.images,
         discount: req.body.discount,
         category: req.body.category,
+        size: req.body.size,
 
     });
 
