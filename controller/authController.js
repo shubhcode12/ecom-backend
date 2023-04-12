@@ -4,6 +4,7 @@ const Admin = require("../models/admin.model");
 const jwt = require("jsonwebtoken");
 const shortid = require("shortid");
 const { default: mongoose } = require("mongoose");
+const Company = require("../models/company.model");
 
 
 const signUp = async (req, res) => {
@@ -120,4 +121,44 @@ const adminSignin = async (req, res) => {
     }
 }
 
-module.exports = { signUp, signIn, adminSignin };
+const companySignin = async (req, res) => {
+    try {
+        if (!req.body.email || !req.body.password) {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                message: "Please enter email and password",
+            });
+
+        }
+
+        Company.findOne({
+            email: req.body.email,
+        }).then((result) => {
+
+            if (!result) {
+                return res.status(404).send({ message: "Company Not found." });
+            }
+
+            if (req.body.password != result.password) {
+                return res.status(401).send({ message: "Invalid Password!" });
+            }else{
+                res.status(200).json({
+                    _id: result._id,
+                    name: result.name,
+                    email: result.email,                              
+                });
+            }
+
+        }).catch((err) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+        });
+
+
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error });
+    }
+}
+
+module.exports = { signUp, signIn, adminSignin, companySignin };
