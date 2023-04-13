@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const Review = require("../models/review.model");
 const Company = require("../models/company.model");
 const { default: mongoose } = require("mongoose");
+const Agreement = require("../models/agreement.model");
 
 // Users listing api
 router.route("/users").get(async function (req, res) {
@@ -15,6 +16,31 @@ router.route("/users").get(async function (req, res) {
 router.route("/reviews").get(async function (req, res) {
     const result = await Review.find();
     res.json(result);
+});
+
+// trade agreement list api
+router.route("/agreement").get(async function (req, res) {
+    const result = await Agreement.find();
+    res.json(result);
+});
+
+// trade agreement list api
+router.route("/agreement/add").get(async function (req, res) {
+    const agr = new Agreement({
+        _id: new mongoose.Types.ObjectId,
+        title: req.body.title,
+        pdf: req.body.pdf,        
+    });
+    agr.save().then((cData) => {
+        res
+            .status(200)
+            .json({ newReview: cData });
+
+    }).catch(err => {
+        res.status(500).json({
+            error: err
+        })
+    });
 });
 
 // Company List api
