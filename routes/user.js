@@ -25,7 +25,7 @@ router.route("/agreement").get(async function (req, res) {
 });
 
 // trade agreement list api
-router.route("/agreement/add").get(async function (req, res) {
+router.route("/agreement/add").post(async function (req, res) {
     const agr = new Agreement({
         _id: new mongoose.Types.ObjectId,
         title: req.body.title,
