@@ -34,7 +34,7 @@ router.route("/agreement/add").post(async function (req, res) {
     agr.save().then((cData) => {
         res
             .status(200)
-            .json({ newReview: cData });
+            .json(cData);
 
     }).catch(err => {
         res.status(500).json({
