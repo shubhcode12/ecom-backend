@@ -29,7 +29,8 @@ router.route("/agreement/add").post(async function (req, res) {
     const agr = new Agreement({
         _id: new mongoose.Types.ObjectId,
         title: req.body.title,
-        pdf: req.body.pdf,        
+        pdf: req.body.pdf,
+        company : req.body.company,        
     });
     agr.save().then((cData) => {
         res
