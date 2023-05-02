@@ -13,6 +13,12 @@ const agreementSchema = new mongoose.Schema({
         required: true,
     },
 
+    "company": {
+        "type": "String",
+        required: true
+
+    },
+
 });
 
 const AgreementModel = mongoose.model("agreement", agreementSchema, "agreement");
