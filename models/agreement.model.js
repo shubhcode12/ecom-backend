@@ -15,8 +15,6 @@ const agreementSchema = new mongoose.Schema({
 
     "company": {
         "type": "String",
-        required: true
-
     },
 
 });
